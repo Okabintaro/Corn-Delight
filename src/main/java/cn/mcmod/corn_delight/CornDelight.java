@@ -30,6 +30,7 @@ public class CornDelight {
         ItemRegistry.ITEMS.register(modEventBus);
         WildCornGeneration.FEATURES.register(modEventBus);
         WildCornGeneration.PATCHES.register(modEventBus);
+        SoundRegistry.SOUNDS.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CornDelightConfig.COMMON_CONFIG);
     }
     

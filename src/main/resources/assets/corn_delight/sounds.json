@@ -1,0 +1,8 @@
+{
+  "popcorn_pops": {
+    "sounds": [
+      "minecraft:mob/chicken/plop"
+    ],
+    "subtitle": "cornsdelight.subtitle.popcorn_pop"
+  }
+}

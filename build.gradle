@@ -2,10 +2,14 @@ buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
+        maven {
+            url "https://repo.spongepowered.org/repository/maven-public/"
+        }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
@@ -14,6 +18,12 @@ plugins {
     id 'maven-publish'
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, "cornsdelight.refmap.json"
+    config 'cornsdelight.mixins.json'
+}
 
 version = '1.0.2-1.18.2'
 group = 'com.mcmod.corn_delight' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -31,9 +41,11 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=cornsdelight.mixins.json'
+
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-			properties 'mixin.env.disableRefMap': 'true'
+			//properties 'mixin.env.disableRefMap': 'true'
             mods {
                 corn_delight {
                     source sourceSets.main
@@ -43,9 +55,11 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=cornsdelight.mixins.json'
+
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-			properties 'mixin.env.disableRefMap': 'true'
+			//properties 'mixin.env.disableRefMap': 'true'
             mods {
                 corn_delight {
                     source sourceSets.main
@@ -94,6 +108,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.0.44'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf("cn.mcmod_mmf.mmlib:MMLib:1.0.1-1.18.2")
     implementation fg.deobf("curse.maven:farmers-delight-398521:3765351")
